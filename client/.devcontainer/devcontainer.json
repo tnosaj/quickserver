@@ -1,0 +1,17 @@
+{
+    "name": "Go",
+    "image": "mcr.microsoft.com/devcontainers/go:1-1.22-bookworm",
+    "customizations": {
+            // Configure properties specific to VS Code.
+            "vscode": {
+                    "settings": {},
+                    "extensions": [
+                            "streetsidesoftware.code-spell-checker"
+                    ]
+            }
+    },
+    "mounts": [
+        "source=${localEnv:HOME}${localEnv:USERPROFILE}/.aws,target=/root/.aws,type=bind,consistency=cached",
+        "source=${localEnv:HOME}${localEnv:USERPROFILE}/.aws,target=/home/vscode/.aws,type=bind,consistency=cached"
+    ]
+}

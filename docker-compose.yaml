@@ -1,0 +1,85 @@
+services:
+  db:
+    image: postgres:16
+    restart: always
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypass
+      POSTGRES_DB: mydb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  client:
+    build: client/
+    ports:
+      - "8080:8080"
+  app1:
+    build: server/
+    ports:
+      - "8081:8081"
+    depends_on:
+      - db
+    environment:
+      - PORT=8081
+      - DATABASE_USER=myuser
+      - DATABASE_PASS=mypass
+      - DATABASE_HOST=db
+      - DATABASE_PORT=5432
+      - DATABASE_NAME=mydb
+  app2:
+    build: server/
+    ports:
+      - "8082"
+    depends_on:
+      - db
+    environment:
+      - PORT=8082
+      - DATABASE_USER=myuser
+      - DATABASE_PASS=mypass
+      - DATABASE_HOST=db
+      - DATABASE_PORT=5432
+      - DATABASE_NAME=mydb
+  app3:
+    build: server/
+    ports:
+      - "8083"
+    depends_on:
+      - db
+    environment:
+      - PORT=8083
+      - DATABASE_USER=myuser
+      - DATABASE_PASS=mypass
+      - DATABASE_HOST=db
+      - DATABASE_PORT=5432
+      - DATABASE_NAME=mydb
+  haproxy:
+    image: haproxy:latest
+    ports:
+      - "8100:8100"
+      - "8404:8404"
+    volumes:
+      - ./haproxy:/usr/local/etc/haproxy
+  lagger:
+    build: lagger/
+    ports:
+      - "8080"
+    environment:
+      - DEST=db:5432
+      - DELAY=100ms-10ms
+  prometheus:
+    image: prom/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--web.enable-lifecycle'
+      - "--storage.tsdb.retention=36d"
+    ports:
+      - 9090:9090
+    restart: unless-stopped
+    volumes:
+      - ./prometheus:/etc/prometheus
+      - prom_data:/prometheus
+
+volumes:
+  postgres_data:
+  prom_data:
