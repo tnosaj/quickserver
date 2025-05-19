@@ -152,7 +152,7 @@
           "refId": "D"
         }
       ],
-      "title": "APP - latency",
+      "title": "CLIENT - latency",
       "type": "timeseries"
     },
     {
