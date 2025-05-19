@@ -40,19 +40,19 @@ services:
       - DATABASE_HOST=db
       - DATABASE_PORT=5432
       - DATABASE_NAME=mydb
-  app3:
-    build: server/
-    ports:
-      - "8083"
-    depends_on:
-      - db
-    environment:
-      - PORT=8083
-      - DATABASE_USER=myuser
-      - DATABASE_PASS=mypass
-      - DATABASE_HOST=db
-      - DATABASE_PORT=5432
-      - DATABASE_NAME=mydb
+      #  app3:
+      #    build: server/
+      #    ports:
+      #      - "8083"
+      #    depends_on:
+      #      - db
+      #    environment:
+      #      - PORT=8083
+      #      - DATABASE_USER=myuser
+      #      - DATABASE_PASS=mypass
+      #      - DATABASE_HOST=db
+      #      - DATABASE_PORT=5432
+      #      - DATABASE_NAME=mydb
   haproxy:
     image: haproxy:latest
     ports:
